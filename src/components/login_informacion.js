@@ -11,8 +11,12 @@ class LoginInformacion extends Component {
     state = {
         email: "",
         password: "",
-        mensajeError: ""
+        mensaje: ""
     };
+
+    sendData = () => {
+        this.props.parentCallback(this.state.mensaje);
+    }
 
     validacion = () => {
         var email = document.getElementById("email").value;
@@ -24,18 +28,18 @@ class LoginInformacion extends Component {
                 this.setState({
                     email: email,
                     password: password,
-                    mensajeError: ""
+                    mensaje: ""
                 });
             } else {
                 document.getElementById("botonIngresar").style.display = "none";
                 this.setState({
-                    mensajeError: "Ingresa la contraseña."
+                    mensaje: "Ingresa la contraseña."
                 });
             }
         } else {
             document.getElementById("botonIngresar").style.display = "none";
             this.setState({
-                mensajeError: "Email inválido."
+                mensaje: "Email inválido."
             });
         }
     }
@@ -45,18 +49,19 @@ class LoginInformacion extends Component {
             console.log(res);
             if (res.status === 210) {
                 this.setState({
-                    mensajeError: "Credenciales inválidas."
+                    mensaje: "Credenciales inválidas."
                 });
             } else {
                 this.setState({
-                    mensajeError: "Login exitoso."
+                    mensaje: "Login exitoso."
                 });
+                this.sendData();
             }
         }).catch(err => {
             console.log(err);
         });
     }
-    
+
     render() {
         return (
             <div className="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
@@ -80,13 +85,13 @@ class LoginInformacion extends Component {
                         </span>
                     </div>
                     <div className="text-center w-full p-t-10" id="botonIngresar">
-                        <div className="button" id="button-5">
+                        <div className="button" id="button-5" onClick={this.ingresar} >
                             <div id="translate"></div>
-                            <a onClick={this.ingresar}>Ingresar!</a>
+                            <a>Ingresar!</a>
                         </div>
                     </div>
                     <span className="login100-form-titleError p-b-10 p-t-10">
-                        {this.state.mensajeError}
+                        {this.state.mensaje}
                     </span>
                 </form>
             </div>

@@ -8,14 +8,30 @@ import '../vendor/select2/select2.min.css';
 import '../css/util.css';
 import '../css/main.css';
 import LoginInformacion from './login_informacion';
+import Menu from './menu';
 
 class Fondo extends Component {
+
+    state = {
+        showLogin: true,
+        showMenu:false,
+        message: ""
+    };
+
+    callbackFunction = (childData) => {
+        this.setState({ message: childData });
+        if(this.state.message=="Login exitoso."){ 
+            this.setState({ showLogin: false, showMenu:true });
+        }
+    }
+
     render() {
         return (
             <div>
                 <div className="limiter">
                     <div className="container-login100">
-                        <LoginInformacion/>
+                        {this.state.showLogin && <LoginInformacion parentCallback = {this.callbackFunction}/> }
+                        {this.state.showMenu && <Menu/>}
                     </div>
                 </div>
             </div >
