@@ -19,10 +19,14 @@ class Fondo extends Component {
     };
 
     callbackFunction = (childData) => {
-        this.setState({ message: childData });
-        if(this.state.message=="Login exitoso."){ 
-            this.setState({ showLogin: false, showMenu:true });
-        }
+        this.setState({ message: childData }, res=>{
+            if(this.state.message==="Login exitoso."){ 
+                this.setState({ showLogin: false, showMenu:true });
+            }
+            if(this.state.message==="LogOut."){ 
+                this.setState({ showLogin: true, showMenu:false });
+            }
+        });
     }
 
     render() {
@@ -31,7 +35,7 @@ class Fondo extends Component {
                 <div className="limiter">
                     <div className="container-login100">
                         {this.state.showLogin && <LoginInformacion parentCallback = {this.callbackFunction}/> }
-                        {this.state.showMenu && <Menu/>}
+                        {this.state.showMenu && <Menu parentCallback = {this.callbackFunction}/>}
                     </div>
                 </div>
             </div >

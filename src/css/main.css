@@ -664,11 +664,26 @@ iframe {
     opacity: 1;
   }
 }
-/*          MENU         */
-.imagenMenu{
+/*         newProduct         */
+.newProduct{
   height: 80px;
   width: 100px;
   position: relative;
+}
+/*          searchProduct         */
+.searchProduct{
+  height: 75px;
+  width: 90px;
+  position: relative;
+  opacity: 0.8;
+}
+/*          buyProduct         */
+.buyProduct{
+  margin-bottom: -15px;
+  height: 100px;
+  width: 95px;
+  position: relative;
+  opacity: 0.85;
 }
 /*//////////////////////////////////////////////////////////////////
 [ responsive ]*/

@@ -46,7 +46,6 @@ class LoginInformacion extends Component {
 
     ingresar = () => {
         axios.get(URL + "api/getUser/" + this.state.email + "/" + this.state.password).then(res => {
-            console.log(res);
             if (res.status === 210) {
                 this.setState({
                     mensaje: "Credenciales inválidas."
