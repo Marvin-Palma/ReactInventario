@@ -9,22 +9,27 @@ import '../css/util.css';
 import '../css/main.css';
 import LoginInformacion from './login_informacion';
 import Menu from './menu';
+import IngresoProducto from './ingresoProducto';
 
 class Fondo extends Component {
 
     state = {
-        showLogin: true,
-        showMenu:false,
+        showLogin: false,
+        showMenu:true,
+        showIngresoProducto:false,
         message: ""
     };
 
     callbackFunction = (childData) => {
         this.setState({ message: childData }, res=>{
-            if(this.state.message==="Login exitoso."){ 
-                this.setState({ showLogin: false, showMenu:true });
+            if(this.state.message==="Menu."){ 
+                this.setState({ showLogin: false, showMenu:true, showIngresoProducto: false });
             }
             if(this.state.message==="LogOut."){ 
-                this.setState({ showLogin: true, showMenu:false });
+                this.setState({ showLogin: true, showMenu:false, showIngresoProducto: false });
+            }
+            if(this.state.message==="IngresoProducto."){ 
+                this.setState({ showLogin: false, showMenu:false, showIngresoProducto: true });
             }
         });
     }
@@ -36,6 +41,7 @@ class Fondo extends Component {
                     <div className="container-login100">
                         {this.state.showLogin && <LoginInformacion parentCallback = {this.callbackFunction}/> }
                         {this.state.showMenu && <Menu parentCallback = {this.callbackFunction}/>}
+                        {this.state.showIngresoProducto && <IngresoProducto parentCallback = {this.callbackFunction}/>}
                     </div>
                 </div>
             </div >

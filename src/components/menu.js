@@ -19,6 +19,13 @@ class Menu extends Component {
         });
     }
 
+    irModulo = (modulo) => {
+        console.log(modulo);
+        this.setState({message:modulo}, res=>{
+            this.props.parentCallback(this.state.message);
+        });
+    }
+
     render() {
         return (
             <div className="wrap-menu100 p-l-40 p-r-40 p-t-50 p-b-40">
@@ -29,7 +36,7 @@ class Menu extends Component {
 
                     <div className="wrap-inputMenu100 validate-input m-b-16">
                         <div className="text-center w-full p-t-10">
-                            <div className="buttonMenu" id="button-5" onClick={this.ModuloNuevoProducto}>
+                            <div className="buttonMenu" id="button-5" onClick={()=>this.irModulo("IngresoProducto.")}>
                                 <div id="translateMenu"></div>
                                 <img src={newProduct} alt="Logo" className="newProduct" />
                                 <a>Ingresar un nuevo producto!</a>
@@ -41,7 +48,7 @@ class Menu extends Component {
 
                     <div className="wrap-inputMenu100 validate-input m-b-16">
                         <div className="text-center w-full p-t-10">
-                            <div className="buttonMenu" id="button-5" onClick={this.ModuloNuevoProducto}>
+                            <div className="buttonMenu" id="button-5" onClick={()=>this.irModulo()}>
                                 <div id="translateMenu"></div>
                                 <img src={searchProduct} alt="Logo" className="searchProduct" />
                                 <a>Consulta de productos!</a>
@@ -53,7 +60,7 @@ class Menu extends Component {
 
                     <div className="wrap-inputMenu100 validate-input m-b-16">
                         <div className="text-center w-full p-t-10">
-                            <div className="buttonMenu" id="button-5" onClick={this.ModuloNuevoProducto}>
+                            <div className="buttonMenu" id="button-5" onClick={()=>this.irModulo()}>
                                 <div id="translateMenu"></div>
                                 <img src={buyProduct} alt="Logo" className="buyProduct" />
                                 <a>Realizar una compra!</a>

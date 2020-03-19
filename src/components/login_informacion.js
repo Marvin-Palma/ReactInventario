@@ -52,7 +52,7 @@ class LoginInformacion extends Component {
                 });
             } else {
                 this.setState({
-                    mensaje: "Login exitoso."
+                    mensaje: "Menu."
                 });
                 this.sendData();
             }
@@ -69,7 +69,7 @@ class LoginInformacion extends Component {
                         Login
 					            </span>
                     <div className="wrap-input100 validate-input m-b-16" data-validate="Valid email is required: ex@abc.xyz">
-                        <input className="input100" type="text" name="email" placeholder="Email" id="email" onChange={this.validacion}></input>
+                        <input className="input100Login" type="text" name="email" placeholder="Email" id="email" onChange={this.validacion}></input>
                         <span className="focus-input100"></span>
                         <span className="symbol-input100">
                             <span className="lnr lnr-envelope"></span>
@@ -77,7 +77,7 @@ class LoginInformacion extends Component {
 
                     </div>
                     <div className="wrap-input100 validate-input m-b-16" data-validate="Password is required">
-                        <input className="input100" type="password" name="pass" placeholder="Password" id="password" onChange={this.validacion}></input>
+                        <input className="input100Login" type="password" name="pass" placeholder="Password" id="password" onChange={this.validacion}></input>
                         <span className="focus-input100"></span>
                         <span className="symbol-input100">
                             <span className="lnr lnr-lock"></span>
