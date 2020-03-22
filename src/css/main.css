@@ -223,6 +223,13 @@ iframe {
   overflow: hidden;
 }
 
+.wrap-menuFlex {
+  width: 1400px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
 
 
 /*------------------------------------------------------------------
@@ -241,6 +248,18 @@ iframe {
 .login100-form-title {
   font-family: Raleway-Black;
   font-size: 30px;
+  color: #333333;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-align: center;
+
+  width: 100%;
+  display: block;
+}
+
+.login100-form-desc {
+  font-family: Raleway-Black;
+  font-size: 15px;
   color: #333333;
   line-height: 1.2;
   text-transform: uppercase;
@@ -309,9 +328,23 @@ input[type=number] {
   z-index: 1;
 }
 
+.containerProductos{
+  background-color: #e6e6e6;
+  border-radius: 15px;
+  padding-top: 20px;
+  width: 60%;
+  margin-left: 20%;
+  margin-right: 20%;
+}
 .wrap-inputProducto100 {
   position: relative;
   width: 35%;
+  z-index: 1;
+}
+
+.wrap-inputProducto100Consulta {
+  position: relative;
+  width: 100%;
   z-index: 1;
 }
 

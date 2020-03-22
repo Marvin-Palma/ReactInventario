@@ -48,7 +48,7 @@ class Menu extends Component {
 
                     <div className="wrap-inputMenu100 validate-input m-b-16">
                         <div className="text-center w-full p-t-10">
-                            <div className="buttonMenu" id="button-5" onClick={()=>this.irModulo()}>
+                            <div className="buttonMenu" id="button-5" onClick={()=>this.irModulo("ConsultaProducto.")}>
                                 <div id="translateMenu"></div>
                                 <img src={searchProduct} alt="Logo" className="searchProduct" />
                                 <a>Consulta de productos!</a>
