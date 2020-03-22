@@ -92,10 +92,10 @@ class ConsultaProductos extends Component {
                                 <Container  style={{ width: "100%", textAlign:"center !important"}}>
                                     <Row>
                                         <Col>
-                                            <div style={{ textAlign: "left" }} className="login100-form-desc">Nombre: {item.nombre}</div>
-                                            <div style={{ textAlign: "left" }} className="login100-form-desc">Descripción: {item.descripcion}</div>
-                                            <div style={{ textAlign: "left" }} className="login100-form-desc">Precio: Q.{item.precio}</div>
-                                            <div style={{ textAlign: "left" }} className="login100-form-desc">Cantidad: {item.cantidad} Unidades.</div>
+                                            <div className="login100-form-desc">Nombre: {item.nombre}</div>
+                                            <div className="login100-form-desc">Descripción: {item.descripcion}</div>
+                                            <div className="login100-form-desc">Precio: Q.{item.precio}</div>
+                                            <div className="login100-form-desc">Cantidad: {item.cantidad} Unidades.</div>
                                         </Col>
                                         <Col>
                                             <div>
