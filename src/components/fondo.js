@@ -11,6 +11,7 @@ import LoginInformacion from './login_informacion';
 import Menu from './menu';
 import IngresoProducto from './ingresoProducto';
 import ConsultaProducto from './consultaProducto';
+import CompraProducto from './comprarProducto';
 
 class Fondo extends Component {
 
@@ -19,22 +20,26 @@ class Fondo extends Component {
         showMenu:true,
         showIngresoProducto:false,
         showConsultaProducto:false,
+        showCompraProducto:false,
         message: ""
     };
 
     callbackFunction = (childData) => {
         this.setState({ message: childData }, res=>{
             if(this.state.message==="Menu."){ 
-                this.setState({ showLogin: false, showMenu:true, showIngresoProducto: false, showConsultaProducto:false });
+                this.setState({ showLogin: false, showMenu:true, showIngresoProducto: false, showConsultaProducto:false, showCompraProducto:false });
             }
             if(this.state.message==="LogOut."){ 
-                this.setState({ showLogin: true, showMenu:false, showIngresoProducto: false, showConsultaProducto:false });
+                this.setState({ showLogin: true, showMenu:false, showIngresoProducto: false, showConsultaProducto:false,  showCompraProducto:false });
             }
             if(this.state.message==="IngresoProducto."){ 
-                this.setState({ showLogin: false, showMenu:false, showIngresoProducto: true, showConsultaProducto:false });
+                this.setState({ showLogin: false, showMenu:false, showIngresoProducto: true, showConsultaProducto:false,  showCompraProducto:false });
             }
             if(this.state.message==="ConsultaProducto."){ 
-                this.setState({ showLogin: false, showMenu:false, showIngresoProducto: false, showConsultaProducto:true });
+                this.setState({ showLogin: false, showMenu:false, showIngresoProducto: false, showConsultaProducto:true,  showCompraProducto:false });
+            }
+            if(this.state.message==="CompraProducto."){ 
+                this.setState({ showLogin: false, showMenu:false, showIngresoProducto: false, showConsultaProducto:false,  showCompraProducto:true });
             }
         });
     }
@@ -48,6 +53,7 @@ class Fondo extends Component {
                         {this.state.showMenu && <Menu parentCallback = {this.callbackFunction}/>}
                         {this.state.showIngresoProducto && <IngresoProducto parentCallback = {this.callbackFunction}/>}
                         {this.state.showConsultaProducto && <ConsultaProducto parentCallback = {this.callbackFunction}/>}
+                        {this.state.showCompraProducto && <CompraProducto parentCallback = {this.callbackFunction}/>}
                     </div>
                 </div>
             </div >

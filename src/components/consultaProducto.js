@@ -16,10 +16,10 @@ class ConsultaProductos extends Component {
         items = items.filter(item => {
             return item.nombre.toLowerCase().indexOf(document.getElementById("searchBar").value.toLowerCase()) > -1;
         });
-        this.setState({ items: items }, res=>{
-            if(this.state.items.length==0){
+        this.setState({ items: items }, res => {
+            if (this.state.items.length == 0) {
                 this.setState({ message: "No se encontraron productos." });
-            }else{
+            } else {
                 this.setState({ message: "" });
             }
         });
@@ -89,7 +89,7 @@ class ConsultaProductos extends Component {
                     {
                         this.state.items.map(function (item, index) {
                             return <div key={index} className="containerProductos">
-                                <Container  style={{ width: "100%", textAlign:"center !important"}}>
+                                <Container style={{ width: "100%", textAlign: "center !important" }}>
                                     <Row>
                                         <Col>
                                             <div className="login100-form-desc">Nombre: {item.nombre}</div>
@@ -103,18 +103,13 @@ class ConsultaProductos extends Component {
                                             </div>
                                         </Col>
                                     </Row>
-                                    <hr style={{borderColor:"transparent", marginTop:"10px"}}></hr>
+                                    <hr style={{ borderColor: "transparent", marginTop: "10px" }}></hr>
                                 </Container>
                             </div>
                         })
                     }
                 </div>
-
-
-
-
             </div>
-
         );
     }
 

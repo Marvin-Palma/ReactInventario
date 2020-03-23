@@ -336,6 +336,14 @@ input[type=number] {
   margin-left: 20%;
   margin-right: 20%;
 }
+
+.containerProductosCarretilla{
+  background-color: #e6e6e6;
+  border-radius: 15px;
+  padding-top: 20px;
+  width: 100%;
+}
+
 .wrap-inputProducto100 {
   position: relative;
   width: 35%;
@@ -662,6 +670,30 @@ input[type=number] {
   width: 150px;
   border: 2px solid #0250C5;
   margin: 20px 20px 20px 20px;
+  color: #074DB6;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: .8em;
+  letter-spacing: 1.5px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.carretillaTitle{
+  border-radius: 15px; 
+  background-color: #0994DB; 
+  color: #333333;
+  padding-top: 13px
+}
+
+.buttonCarretilla {
+  display: inline-flex;
+  height: 40px;
+  width: 50px;
+  border: 2px solid #0250C5;
   color: #074DB6;
   text-transform: uppercase;
   text-decoration: none;
