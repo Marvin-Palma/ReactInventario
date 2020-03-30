@@ -144,7 +144,7 @@ class IngresoProducto extends Component {
                     </div>
 
 
-                    <div className="text-center w-full p-t-10">
+                    <div className="text-center w-full p-t-25">
                         {/* Return */}
                         <div className="button" id="button-5" onClick={this.return}>
                             <div id="translate"></div>

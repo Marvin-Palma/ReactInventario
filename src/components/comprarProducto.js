@@ -9,11 +9,11 @@ class ComprarProductos extends Component {
         productosIniciales: [],
         items: [],
         itemsCarretilla: [],
+        messageCarretilla: "No se han agregado productos!!!",
         message: ""
     }
 
     filtroProductos = (event) => {
-        console.log(this.state.productosIniciales);
         let items = this.state.productosIniciales;
         items = items.filter(item => {
             return item.nombre.toLowerCase().indexOf(document.getElementById("searchBar").value.toLowerCase()) > -1;
@@ -27,19 +27,83 @@ class ComprarProductos extends Component {
         });
     }
 
-    agregarCarretilla = (producto) => {
-        /* Antes de agregar el producto de forma normal,
-           Debería buscar en el arreglo de itemsCarretilla para verificar que no existe previamente
-           De ser así debo agregar uno a la cantidad nada más
-           Además no debo dejar que agregue más cuando ya agregó la cantidad máxima de ese producto disponible */
-        var carretilla= this.state.itemsCarretilla;
-        carretilla.push(producto);
+    agregarCarretilla = (productoId) => {
+        if (this.state.itemsCarretilla) {
+            this.setState({ messageCarretilla: "" });
+        } else {
+            this.setState({ messageCarretilla: "No se han agregado productos!!!" });
+        }
+        axios.get(URL + "api/get-productos/").then(res => {
+            if (res.status === 210) {
+                this.setState({
+                    message: "No se encontraron productos."
+                });
+            } else {
+                //Asignación inicial de productos
+                this.setState({
+                    productosIniciales: res.data.productos,
+                    items: res.data.productos
+                });
+
+                /* Antes de agregar el producto de forma normal,
+                    Debería buscar en el arreglo de itemsCarretilla para verificar que no existe previamente
+                    De ser así debo agregar uno a la cantidad nada más
+                    Además no debo dejar que agregue más cuando ya agregó la cantidad máxima de ese producto disponible */
+                var inventario = this.state.items.find(inventario => inventario._id === productoId);
+                var carretilla = this.state.itemsCarretilla;
+                var producto = this.state.itemsCarretilla.find(productoCarretilla => productoCarretilla._id === productoId);
+
+                if (producto) {
+                    if (inventario.cantidad > producto.cantidad) {
+                        var index = this.state.itemsCarretilla.findIndex(productoCarretilla => productoCarretilla._id === productoId);
+                        carretilla[index].cantidad++;
+                        this.setState({
+                            itemsCarretilla: carretilla
+                        });
+                    }else{
+                        alert("No pueden agregar más productos de los que existen en el inventario!!!");
+                    }
+                } else {
+                    producto = this.state.items.find(productoCarretilla => productoCarretilla._id === productoId);
+                    producto.cantidad = 1;
+                    carretilla.push(producto);
+                    this.setState({
+                        itemsCarretilla: carretilla
+                    });
+                }
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+        this.llenadoDeValores();
+    }
+
+    eliminarCarretilla = (productoId) => {
+        var carretilla = this.state.itemsCarretilla;
+        var producto = this.state.itemsCarretilla.find(productoCarretilla => productoCarretilla._id === productoId);
+        var index = this.state.itemsCarretilla.findIndex(productoCarretilla => productoCarretilla._id === productoId);
+        if (producto.cantidad == 1) {
+            carretilla.splice(index, 1);
+        } else {
+            producto.cantidad--;
+            carretilla.splice(index, 1, producto);
+        }
         this.setState({
             itemsCarretilla: carretilla
+        }, res => {
+            if (this.state.itemsCarretilla.length != 0) {
+                this.setState({ messageCarretilla: "" });
+            } else {
+                this.setState({ messageCarretilla: "No se han agregado productos!!!" });
+            }
         });
     }
 
     componentWillMount() {
+        this.llenadoDeValores();
+    }
+
+    llenadoDeValores(){
         //LLamada a servidor para traer todos los productos
         axios.get(URL + "api/get-productos/").then(res => {
             if (res.status === 210) {
@@ -67,7 +131,7 @@ class ComprarProductos extends Component {
     render() {
         return (
             <div className="wrap-menuFlex p-l-40 p-r-40 p-t-50 p-b-40" style={{ textAlign: "center" }}>
-                <span className="login100-form-title p-b-18">Consulta de productos</span>
+                <span className="login100-form-title p-b-18">Venta de productos</span>
 
                 <Container>
                     <Row>
@@ -80,6 +144,10 @@ class ComprarProductos extends Component {
                                 <span className="symbol-input100">
                                 </span>
                             </div>
+                            {/* Mensaje ERROR */}
+                            <span className="login100-form-titleError p-b-10 p-t-10">
+                                {this.state.message}
+                            </span>
                         </Col>
                         <Col>
                             {/* Return Menu */}
@@ -89,10 +157,6 @@ class ComprarProductos extends Component {
                                     <a>Regresar!</a>
                                 </div>
                             </div>
-                            {/* Mensaje ERROR */}
-                            <span className="login100-form-titleError p-b-10 p-t-10">
-                                {this.state.message}
-                            </span>
                         </Col>
                     </Row>
                 </Container>
@@ -104,7 +168,7 @@ class ComprarProductos extends Component {
                         <Col>
                             <div>
                                 {
-                                    this.state.items.map((item, index) =>{
+                                    this.state.items.map((item, index) => {
                                         return <div key={index} className="containerProductosCarretilla">
                                             <Container style={{ width: "100%", textAlign: "center !important" }}>
                                                 <Row>
@@ -122,7 +186,7 @@ class ComprarProductos extends Component {
                                                     <Col xs="6" sm="2">
                                                         {/* Botón para agregar a carretilla */}
                                                         <div className="text-center p-t-20">
-                                                            <div className="buttonCarretilla" id="button-5" onClick={() => this.agregarCarretilla(item)}>
+                                                            <div className="buttonCarretilla" id="button-5" onClick={() => this.agregarCarretilla(item._id)}>
                                                                 <div id="translate"></div>
                                                                 <a>+</a>
                                                             </div>
@@ -140,19 +204,28 @@ class ComprarProductos extends Component {
                             <span className="login100-form-title carretillaTitle p-b-18 m-b-12">Carretilla de compras</span>
                             <div>
                                 {
-                                    this.state.itemsCarretilla.map((item, index)=> {
-                                        return <div key={index} className="containerProductosCarretilla">
+                                    this.state.itemsCarretilla.map((itemCarretilla, indexCarretilla) => {
+                                        return <div key={indexCarretilla} className="containerProductosCarretilla">
                                             <Container style={{ width: "100%", textAlign: "center !important" }}>
                                                 <Row>
-                                                    <Col>
-                                                        <div className="login100-form-desc">Nombre: {item.nombre}</div>
-                                                        <div className="login100-form-desc">Descripción: {item.descripcion}</div>
-                                                        <div className="login100-form-desc">Precio: Q.{item.precio}</div>
-                                                        <div className="login100-form-desc">Cantidad: {item.cantidad} Unidades.</div>
+                                                    <Col xs="6" sm="5">
+                                                        <div className="login100-form-desc">Nombre: {itemCarretilla.nombre}</div>
+                                                        <div className="login100-form-desc">Descripción: {itemCarretilla.descripcion}</div>
+                                                        <div className="login100-form-desc">Precio: Q.{itemCarretilla.precio}</div>
+                                                        <div className="login100-form-desc">Cantidad: {itemCarretilla.cantidad} Unidades.</div>
                                                     </Col>
-                                                    <Col>
+                                                    <Col xs="6" sm="5">
                                                         <div>
-                                                            <img src={URL + "api/get-image-producto/" + item.imagen} className="newProduct"></img>
+                                                            <img src={URL + "api/get-image-producto/" + itemCarretilla.imagen} className="newProduct"></img>
+                                                        </div>
+                                                    </Col>
+                                                    <Col xs="6" sm="2">
+                                                        {/* Botón para agregar a carretilla */}
+                                                        <div className="text-center p-t-20">
+                                                            <div className="buttonCarretilla" id="button-5" onClick={() => this.eliminarCarretilla(itemCarretilla._id)}>
+                                                                <div id="translate"></div>
+                                                                <a>-</a>
+                                                            </div>
                                                         </div>
                                                     </Col>
                                                 </Row>
@@ -162,6 +235,10 @@ class ComprarProductos extends Component {
                                     })
                                 }
                             </div>
+                            {/* Mensaje ERROR */}
+                            <span className="login100-form-titleError p-b-10 p-t-10">
+                                {this.state.messageCarretilla}
+                            </span>
                         </Col>
                     </Row>
                 </Container>
