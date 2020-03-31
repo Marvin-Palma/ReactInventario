@@ -60,21 +60,28 @@ class ComprarProductos extends Component {
                         this.setState({
                             itemsCarretilla: carretilla
                         });
-                    }else{
+                    } else {
                         alert("No pueden agregar más productos de los que existen en el inventario!!!");
                     }
                 } else {
-                    producto = this.state.items.find(productoCarretilla => productoCarretilla._id === productoId);
-                    producto.cantidad = 1;
-                    carretilla.push(producto);
-                    this.setState({
-                        itemsCarretilla: carretilla
-                    });
+                    if (inventario.cantidad == 0) {
+                        alert("No pueden agregar más productos de los que existen en el inventario!!!");
+                        if (this.state.itemsCarretilla.length != 0) {
+                            this.setState({ messageCarretilla: "" });
+                        } else {
+                            this.setState({ messageCarretilla: "No se han agregado productos!!!" });
+                        }
+                    } else {
+                        producto = this.state.items.find(productoCarretilla => productoCarretilla._id === productoId);
+                        producto.cantidad = 1;
+                        carretilla.push(producto);
+                        this.setState({
+                            itemsCarretilla: carretilla
+                        });
+                    }
                 }
             }
-        }).catch(err => {
-            console.log(err);
-        });
+        }).catch(err => { });
         this.llenadoDeValores();
     }
 
@@ -103,7 +110,7 @@ class ComprarProductos extends Component {
         this.llenadoDeValores();
     }
 
-    llenadoDeValores(){
+    llenadoDeValores() {
         //LLamada a servidor para traer todos los productos
         axios.get(URL + "api/get-productos/").then(res => {
             if (res.status === 210) {
@@ -117,15 +124,47 @@ class ComprarProductos extends Component {
                     items: res.data.productos
                 })
             }
-        }).catch(err => {
-            console.log(err);
-        });
+        }).catch(err => { });
     }
 
     return = () => {
         this.setState({ message: "Menu." }, res => {
             this.props.parentCallback(this.state.message);
         });
+    }
+
+    actualizarMenosCarretilla() {
+        this.state.itemsCarretilla.forEach(element => {
+            var productocantidadInventario = this.state.items.find(elementInventario => elementInventario._id == element._id);
+            var nuevaCantidad = productocantidadInventario.cantidad - element.cantidad;
+            axios.post(URL + "api/update-producto-cantidad/" + element._id, { cantidad: nuevaCantidad }).then(res => {
+            }).catch({});
+        });
+    }
+
+    guardarFactura() {
+        axios.post(URL + "api/insert-factura", {
+            nombre: document.getElementById("nombreCliente").value,
+            nit: document.getElementById("nitCliente").value,
+            productos: this.state.itemsCarretilla
+        });
+    }
+
+    comprar = () => {
+        if(this.state.itemsCarretilla.length!=0){
+            if(document.getElementById("nombreCliente").value!="" && document.getElementById("nitCliente").value!=""){
+                this.guardarFactura();
+                this.actualizarMenosCarretilla();
+                alert("Compra realizada con éxito!!!");
+                this.setState({ message: "Menu." }, res => {
+                    this.props.parentCallback(this.state.message);
+                });
+            }else{
+                alert("Ingresa Nombre y NIT");
+            }
+        }else{
+            alert("Ingresa al menos un producto a la carretilla!!!");
+        }
     }
 
     render() {
@@ -135,7 +174,7 @@ class ComprarProductos extends Component {
 
                 <Container>
                     <Row>
-                        <Col>
+                        <Col xs="6" sm="6">
                             {/* Input de búsqueda */}
                             <div className="wrap-inputProducto100Consulta m-b-18">
                                 <span className="login100-form-subtitle p-b-10 p-t-8">Nombre del producto</span>
@@ -149,12 +188,21 @@ class ComprarProductos extends Component {
                                 {this.state.message}
                             </span>
                         </Col>
-                        <Col>
+                        <Col xs="6" sm="3">
                             {/* Return Menu */}
                             <div className="text-center p-t-10">
                                 <div className="button" id="button-5" onClick={this.return}>
                                     <div id="translate"></div>
                                     <a>Regresar!</a>
+                                </div>
+                            </div>
+                        </Col>
+                        <Col xs="6" sm="3">
+                            {/* Realizar Compra */}
+                            <div className="text-center p-t-10">
+                                <div className="button" id="button-5" onClick={this.comprar}>
+                                    <div id="translate"></div>
+                                    <a>Comprar!</a>
                                 </div>
                             </div>
                         </Col>
@@ -201,6 +249,26 @@ class ComprarProductos extends Component {
                             </div>
                         </Col>
                         <Col>
+                            {/* Input Nombre Cliente */}
+
+                            <div className="wrap-inputProducto100PorCiento m-b-18">
+                                <span className="login100-form-subtitle p-b-10 p-t-8">Nombre del cliente</span>
+                                <input className="input100" placeholder="Nombre del cliente (30 caracteres)" maxLength="30" id="nombreCliente"></input>
+                                <span className="focus-input100"></span>
+                                <span className="symbol-input100">
+                                </span>
+                            </div>
+
+                            {/* Input NIT Cliente */}
+
+                            <div className="wrap-inputProducto100PorCiento m-b-18">
+                                <span className="login100-form-subtitle p-b-10 p-t-8">NIT del cliente</span>
+                                <input className="input100" placeholder="NIT del cliente" maxLength="15" id="nitCliente"></input>
+                                <span className="focus-input100"></span>
+                                <span className="symbol-input100">
+                                </span>
+                            </div>
+
                             <span className="login100-form-title carretillaTitle p-b-18 m-b-12">Carretilla de compras</span>
                             <div>
                                 {

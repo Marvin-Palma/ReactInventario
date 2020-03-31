@@ -350,6 +350,12 @@ input[type=number] {
   z-index: 1;
 }
 
+.wrap-inputProducto100PorCiento {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
 .wrap-inputProducto100Consulta {
   position: relative;
   width: 100%;
