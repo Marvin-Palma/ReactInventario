@@ -3,7 +3,7 @@ import URL from '../Constants';
 import axios from 'axios';
 import { Container, Row, Col } from 'reactstrap';
 
-class ConsultaProductos extends Component {
+class UpdateProducto extends Component {
 
     state = {
         productosIniciales: [],
@@ -50,10 +50,22 @@ class ConsultaProductos extends Component {
         });
     }
 
+    update = (producto, index) => {
+        var cantidad = document.getElementById(index).value;
+        if (cantidad < 0 || cantidad=="") {
+            alert("Cantidad no puede estar vacía o ser menor a cero!!!");
+        } else {
+            axios.post(URL + "api/update-producto-cantidad/" + producto._id, { cantidad: cantidad }).then(res => {
+                this.componentWillMount();
+                alert("Producto actualizado!!!")
+            }).catch({});
+        }
+    }
+
     render() {
         return (
             <div className="wrap-menuFlex p-l-40 p-r-40 p-t-50 p-b-40" style={{ textAlign: "center" }}>
-                <span className="login100-form-title p-b-18">Consulta de productos</span>
+                <span className="login100-form-title p-b-18">Actualización Productos</span>
 
                 <Container>
                     <Row>
@@ -87,20 +99,34 @@ class ConsultaProductos extends Component {
                 {/* Generación de Divs con productos */}
                 <div>
                     {
-                        this.state.items.map(function (item, index) {
+                        this.state.items.map((item, index) => {
                             return <div key={index} className="containerProductos">
                                 <Container style={{ width: "100%", textAlign: "center !important" }}>
                                     <Row>
-                                        <Col>
+                                        <Col xs="6" sm="5">
                                             <div className="login100-form-desc">Nombre: {item.nombre}</div>
                                             <div className="login100-form-desc">Descripción: {item.descripcion}</div>
                                             <div className="login100-form-desc">Precio: Q.{item.precio}</div>
                                             <div className="login100-form-desc">Cantidad: {item.cantidad} Unidades.</div>
                                         </Col>
-                                        <Col>
+                                        <Col xs="6" sm="5">
                                             <div>
                                                 <img src={URL + "api/get-image-producto/" + item.imagen} className="newProduct"></img>
                                             </div>
+                                        </Col>
+                                        <Col xs="6" sm="2">
+                                            <Row>
+                                                <input type="number" id={index} style={{ borderBottomStyle:"groove", borderRadius: "10px", width: "70%", height: "40%", textAlign: "center" }}></input>
+                                            </Row>
+                                            <Row>
+                                                {/* Update Button */}
+                                                <div className="text-center p-t-1">
+                                                    <div className="buttonUpdate" id="button-5" onClick={() => this.update(item, index)}>
+                                                        <div id="translate"></div>
+                                                        <a>Update!</a>
+                                                    </div>
+                                                </div>
+                                            </Row>
                                         </Col>
                                     </Row>
                                 </Container>
@@ -114,4 +140,4 @@ class ConsultaProductos extends Component {
 
 }
 
-export default ConsultaProductos; 
+export default UpdateProducto; 
